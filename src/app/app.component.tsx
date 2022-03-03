@@ -11,8 +11,8 @@ export default function AppComponent() {
       <BrowserRouter>
         <NavbarComponent/>
         <Routes>
-          <Route path='/backlog' element={BacklogComponent}/>
-          <Route path='/table' element={TableComponent}/>
+          <Route path='/backlog' element={<BacklogComponent/>}/>
+          <Route path='/table' element={<TableComponent/>}/>
           <Route path='*' element={<Navigate to="/backlog"/>}/>
         </Routes>
       </BrowserRouter>
