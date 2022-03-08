@@ -1,9 +1,9 @@
 
 import "@testing-library/react"
-import AppComponent from "./app.component"
 import ReactDOM from "react-dom"
+import BacklogComponent from "./backlog.component";
 
 it('renders without crashing', () => {
   const div = document.createElement('div');
-  ReactDOM.render(<AppComponent />, div);
+  ReactDOM.render(<BacklogComponent />, div);
 });

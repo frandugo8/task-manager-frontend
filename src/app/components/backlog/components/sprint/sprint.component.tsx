@@ -11,24 +11,32 @@ export default function SprintComponent() {
     setIsDropdownVisible(!isDropdownVisible)
   }
 
+  // const startSprint = (): void => {
+
+  // }
+
+  const completeSprint = (): void => {
+
+  }
+
   return (
     <div className={styles.sprint}>
 
       <div className={styles.header}>
 
-        <div className={styles.details} onClick={toggleDropdown}>
+        <div data-testid="details-element" className={styles.details} onClick={toggleDropdown}>
           <button type="button" className={styles.dropdown}>
             <span className={styles.dropdown__icon}/>
           </button>
 
-          <div className={styles.title}>Sprint 1</div>
+          <div className={styles.title}>{`Sprint ${1}`}</div>
 
           <div className={styles.date}>2 mar - 16 mar</div>
 
           <div className={styles.tasksLength}>(2 incidencias)</div>
         </div>
 
-        <button type="button" className={styles.startFinishButton}>Completar sprint</button>
+        <button type="button" className={styles.startFinishButton} onClick={completeSprint}>Completar sprint</button>
       </div>
 
       {!isDropdownVisible?
@@ -36,10 +44,13 @@ export default function SprintComponent() {
           <div className={styles.defaultList}>
               Planifica un sprint arrastrando el pie de página de sprint debajo de las incidencias correspondientes o arrastrando las incidencias hasta aquí.
           </div>
-          <CreateTaskComponent/>
-        </div> : ""}
+        </div>
+        
+      : <ul className={styles.list}>
+        <li className={styles.task}>Task 1</li>
+      </ul>}
 
-
+      <CreateTaskComponent/>
     </div>
   )
 }
