@@ -4,7 +4,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import ReactDOM from "react-dom";
 import SprintComponent from "./sprint.component";
 
-describe("<Sprint />", () => {
+describe("SprintComponent", () => {
   const setup = () => render(<SprintComponent />);
 
   it('renders without crashing', () => {
