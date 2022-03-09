@@ -4,6 +4,9 @@ import ReactDOM from 'react-dom';
 import AppComponent from './app/app.component';
 import reportWebVitals from './reportWebVitals';
 
+// CSS Global Styles
+import './app/shared/styles/generic/generic-styles.scss';
+
 ReactDOM.render(
   <React.StrictMode>
     <AppComponent />
