@@ -1,4 +1,4 @@
-import React from "react"
+
 import "@testing-library/react"
 import AppComponent from "./app.component"
 import ReactDOM from "react-dom"
