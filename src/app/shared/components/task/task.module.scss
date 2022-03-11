@@ -1,0 +1,41 @@
+
+.task {
+  display: flex;
+  align-items: center;
+  background-color: rgb(105, 105, 105);
+  color: black;
+  padding-left: 15px;
+  border: 1px solid #ffffff;
+  margin-top: -1px;
+  width: 100%;
+  box-sizing: border-box;
+  cursor: move;
+  cursor: grab;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+  height: 40px;
+
+  &:hover {
+    background-color: rgb(61, 61, 61);
+  }
+
+  &___isDragging {
+    cursor: grabbing;
+    cursor: -moz-grabbing;
+    cursor: -webkit-grabbing;
+  }
+
+  &__type {
+    width: 16px;
+    height: 16px;
+    background-color: red;
+  }
+
+  &__id {
+    margin-left: 8px;
+  }
+
+  &__title {
+    margin-left: 8px;
+  }
+}

@@ -1,19 +1,16 @@
 
 import { useState } from 'react'
+import TaskComponent from '../../../../shared/components/task/task.component'
 import CreateTaskComponent from '../../shared/components/create-task/create-task.component'
 import styles from './sprint.module.scss'
 
 export default function SprintComponent() {
-
-  const [isDropdownVisible, setIsDropdownVisible] = useState<boolean>(false)
+  const tasks = []
+  const [isDropdownVisible, setIsDropdownVisible] = useState<boolean>(true)
 
   const toggleDropdown = () => {
     setIsDropdownVisible(!isDropdownVisible)
   }
-
-  // const startSprint = (): void => {
-
-  // }
 
   const completeSprint = (): void => {
 
@@ -39,16 +36,12 @@ export default function SprintComponent() {
         <button type="button" className={styles.startFinishButton} onClick={completeSprint}>Completar sprint</button>
       </div>
 
-      {!isDropdownVisible?
+      {isDropdownVisible?
         <div className={styles.tasks}>
-          <div className={styles.defaultList}>
-              Planifica un sprint arrastrando el pie de página de sprint debajo de las incidencias correspondientes o arrastrando las incidencias hasta aquí.
-          </div>
-        </div>
-        
-      : <ul className={styles.list}>
-        <li className={styles.task}>Task 1</li>
-      </ul>}
+            <div className={styles.defaultList}>
+                Planifica un sprint arrastrando el pie de página de sprint debajo de las incidencias correspondientes o arrastrando las incidencias hasta aquí.
+            </div>
+        </div> : ""}
 
       <CreateTaskComponent/>
     </div>
