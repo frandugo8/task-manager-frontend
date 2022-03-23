@@ -1,13 +1,13 @@
 
 import { render, screen } from "@testing-library/react";
 import ReactDOM from "react-dom"
-import TableComponent from "./table.component";
 import {
   mockGetComputedStyle,
   mockDndSpacing,
   makeDnd,
   DND_DIRECTION_DOWN,
 } from 'react-beautiful-dnd-test-utils';
+import BoardComponent from "./board.component";
 
 const verifyTaskOrder = (
   orderedTasks: string[]
@@ -20,7 +20,7 @@ const verifyTaskOrder = (
 describe("TableComponent", () => {
   it('renders without crashing', () => {
     const div = document.createElement('div');
-    ReactDOM.render(<TableComponent />, div);
+    ReactDOM.render(<BoardComponent/>, div);
   });
 
   describe("dnd", () => {
@@ -29,7 +29,7 @@ describe("TableComponent", () => {
     });
 
     it("moves a task down inside a column", async () => {
-      const {container} = render(<TableComponent/>)
+      const {container} = render(<BoardComponent/>)
       mockDndSpacing(container);
   
       await makeDnd({

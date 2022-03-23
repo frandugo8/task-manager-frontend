@@ -2,13 +2,13 @@
 import { Droppable, Draggable } from 'react-beautiful-dnd'
 import { BoardColumn } from '../../../../shared/models/board-column.interface'
 import { Task } from '../../../../shared/models/task.interface'
-import styles from './table-list.module.scss'
+import styles from './board-list.module.scss'
 
-interface TableListProps {
+interface BoardListProps {
   column: BoardColumn
 }
 
-export default function TableListComponent({column}: TableListProps) {
+export default function BoardListComponent({column}: BoardListProps) {
   return (
     <Droppable type="row" droppableId={column.id} key={column.id}>
       {(provided) => 

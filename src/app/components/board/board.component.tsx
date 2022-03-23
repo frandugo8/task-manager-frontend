@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import styles from './table.module.scss'
+import styles from './board.module.scss'
 import { DragDropContext, Draggable, Droppable, DropResult } from "react-beautiful-dnd";
-import TableListComponent from './components/table-list/table-list.component';
 import { BoardColumn } from '../../shared/models/board-column.interface';
 import { Task } from '../../shared/models/task.interface';
+import BoardListComponent from './components/board-list/board-list.component';
 
-export default function TableComponent() {
+export default function BoardComponent() {
   const tasks: Array<Task> = [
     { id: "1", title: "First task" },
     { id: "2", title: "Second task" },
@@ -93,7 +93,7 @@ export default function TableComponent() {
                       className={styles.board__header}
                       {...provided.dragHandleProps}>{column.name}
                     </div>
-                    <TableListComponent column={column}/>
+                    <BoardListComponent column={column}/>
                   </div>
                 )}
               </Draggable>

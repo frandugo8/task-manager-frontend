@@ -1,7 +1,7 @@
 
 import "@testing-library/react"
 import ReactDOM from "react-dom"
-import TableListComponent from "./table-list.component";
+import BoardListComponent from "./board-list.component";
 
 jest.mock('react-beautiful-dnd', () => ({
   Droppable: ({ children }: any) => children({
@@ -22,7 +22,7 @@ jest.mock('react-beautiful-dnd', () => ({
 describe("TableListComponent", () => {
   it('renders without crashing', () => {
     const div = document.createElement('div');
-    ReactDOM.render(<TableListComponent
+    ReactDOM.render(<BoardListComponent
       column={{id: "test", name: "column", "tasks": [{
         id: "1",
         title: "Task1"

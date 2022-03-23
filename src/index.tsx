@@ -7,10 +7,15 @@ import reportWebVitals from './reportWebVitals';
 // CSS Global Styles
 import './app/shared/styles/generic/generic-styles.scss';
 
+
+//Redux
+import { Provider } from 'react-redux';
+import { store } from "./app/shared/redux/store/store"
+
 ReactDOM.render(
-  <React.StrictMode>
+  <Provider store = {store}>
     <AppComponent />
-  </React.StrictMode>,
+  </Provider>,
   document.getElementById('root')
 );
 
