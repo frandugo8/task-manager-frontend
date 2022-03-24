@@ -1,44 +1,31 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './board.module.scss'
 import { DragDropContext, Draggable, Droppable, DropResult } from "react-beautiful-dnd";
 import { BoardColumn } from '../../shared/models/board-column.interface';
 import { Task } from '../../shared/models/task.interface';
 import BoardListComponent from './components/board-list/board-list.component';
+import { useAppSelector } from '../../shared/redux/store/store';
+import { RootState } from '../../shared/redux/rootReducer';
+import { taskManagerRemoteService } from '../../shared/services/remote/task-manager/task-manager.remote.service';
+import { Board } from '../../shared/models/board.interface';
+
 
 export default function BoardComponent() {
-  const tasks: Array<Task> = [
-    { id: "1", title: "First task" },
-    { id: "2", title: "Second task" },
-    { id: "3", title: "Third task" },
-    { id: "4", title: "Fourth task" },
-    { id: "5", title: "Fifth task" }
-  ];
+  const [columns, setColumns] = useState<Array<BoardColumn>>([])
+  const boards = useAppSelector((state: RootState) => state.boards)
 
-  const columnsFromBackend: Array<BoardColumn> = [
-    {
-      id: "todo",
-      name: "Por hacer",
-      tasks: tasks
-    },
-    {
-      id: "in-progress",
-      name: "En curso",
-      tasks: []
-    },
-    {
-      id: "in-revision",
-      name: "Revisión",
-      tasks: []
-    },
-    {
-      id: "done",
-      name: "Listo",
-      tasks: []
-    }
-  ]
+  useEffect(() => {
+    const tableId = "sprint1"
 
-  const [columns, setColumns] = useState<Array<BoardColumn>>(columnsFromBackend);
+    taskManagerRemoteService.getSprint("default", tableId).then(async (response) => {
+      const columnsData: Array<BoardColumn> = await response.json()
 
+      setColumns(columnsData.map((column: BoardColumn) => {
+        column.tasks = boards.find((board: Board) => board.id === tableId)?.tasks.filter((task: Task) => task.status === column.id)
+        return column
+      }))
+    })
+  }, [boards])
 
   const onDragEnd = (result: DropResult) => {
     if (result.destination) {
@@ -51,15 +38,16 @@ export default function BoardComponent() {
   
         setColumns(columnsCopy)
       } else {
-        // if (source.droppableId !== destination.droppableId)
-
         const columnsCopy = columns.slice()
         const sourceIndex = columns.findIndex((column) => column.id === result.source?.droppableId)
         const destinationIndex = columns.findIndex((column) => column.id === result.destination?.droppableId)
 
         if (sourceIndex !== undefined && destinationIndex !== undefined) {
-          const [removed] = columnsCopy[sourceIndex].tasks.splice(source.index, 1)
-          columnsCopy[destinationIndex].tasks.splice(destination.index, 0, removed)
+          const removed = columnsCopy[sourceIndex].tasks?.splice(source.index, 1)
+
+          if (removed !== undefined) {
+            columnsCopy[destinationIndex].tasks?.splice(destination.index, 0, ...removed)
+          }
 
           setColumns(columnsCopy)
         }

@@ -13,7 +13,7 @@ export default function BoardListComponent({column}: BoardListProps) {
     <Droppable type="row" droppableId={column.id} key={column.id}>
       {(provided) => 
         <div className={styles.content} {...provided.droppableProps} ref={provided.innerRef}>
-          {column.tasks.map((task: Task, index: number) => 
+          {column.tasks?.map((task: Task, index: number) => 
             <Draggable
               key={task.id}
               draggableId={task.id}

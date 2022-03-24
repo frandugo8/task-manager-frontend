@@ -23,9 +23,10 @@ describe("TableListComponent", () => {
   it('renders without crashing', () => {
     const div = document.createElement('div');
     ReactDOM.render(<BoardListComponent
-      column={{id: "test", name: "column", "tasks": [{
+      column={{id: "test", name: "column", isInitial: false, isDone: false, "tasks": [{
         id: "1",
-        title: "Task1"
+        title: "Task1",
+        status: "to-do"
       }]}}
     />, div);
   });
