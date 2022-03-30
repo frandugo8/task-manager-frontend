@@ -7,7 +7,8 @@ import TaskComponent from "./task.component";
 describe("TaskComponent", () => {
   const task: Task = {
     id: "test",
-    title: "test"
+    title: "test",
+    status: "to-do"
   }
 
   it('renders without crashing', () => {
