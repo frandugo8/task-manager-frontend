@@ -7,7 +7,7 @@ const boardsSlice = createSlice({
   name: 'board',
   initialState,
   reducers: {
-    setBoards: (state, action: PayloadAction<{boards: Array<Board>}>) => {
+    setBoards: (_, action: PayloadAction<{boards: Array<Board>}>) => {
       return action.payload.boards
     },
     addBoard: (state, action: PayloadAction<{board: Board}>) => {
