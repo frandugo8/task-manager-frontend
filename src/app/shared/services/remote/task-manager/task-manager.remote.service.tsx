@@ -8,12 +8,29 @@ export const taskManagerRemoteService = {
       },
     })
   },
-  getSprint: (roomId: string, tableId: string): Promise<any> => {
-    return fetch(`${process.env.REACT_APP_TASK_MANAGER}.sprint?roomId=${roomId}&tableId=${tableId}`, {
-      method: "GET",
+  updateColumnPriority: (
+    roomId: string,
+    boardId: string,
+    origin: {columnId: string},
+    destination: {index: number}): Promise<any> => {
+    return fetch(`${process.env.REACT_APP_TASK_MANAGER}.column-priority?roomId=${roomId}&boardId=${boardId}`, {
+      method: "PUT",
       headers:{
         'Content-Type': 'application/json'
-      }
+      },
+      body: JSON.stringify({origin, destination})
+    })
+  },
+  updateTaskPriority: (
+    roomId: string,
+    origin: {boardId: string, taskId: string},
+    destination: {boardId: string, adjacentId: string, isFirst: boolean}): Promise<any> => {
+    return fetch(`${process.env.REACT_APP_TASK_MANAGER}.task-priority?roomId=${roomId}`, {
+      method: "PUT",
+      headers:{
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({origin, destination})
     })
   }
 }

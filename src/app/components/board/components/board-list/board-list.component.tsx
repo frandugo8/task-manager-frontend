@@ -1,11 +1,11 @@
 
 import { Droppable, Draggable } from 'react-beautiful-dnd'
-import { BoardColumn } from '../../../../shared/models/board-column.interface'
+import { Column } from '../../../../shared/models/column.interface'
 import { Task } from '../../../../shared/models/task.interface'
 import styles from './board-list.module.scss'
 
 interface BoardListProps {
-  column: BoardColumn
+  column: Column
 }
 
 export default function BoardListComponent({column}: BoardListProps) {

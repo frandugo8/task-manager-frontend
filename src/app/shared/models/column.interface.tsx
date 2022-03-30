@@ -1,6 +1,6 @@
 import { Task } from "./task.interface";
 
-export interface BoardColumn {
+export interface Column {
   id: string,
   name: string,
   isInitial: boolean
