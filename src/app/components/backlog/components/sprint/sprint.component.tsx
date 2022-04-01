@@ -1,11 +1,17 @@
 
 import { useState } from 'react'
+import { Draggable, Droppable } from 'react-beautiful-dnd'
 import TaskComponent from '../../../../shared/components/task/task.component'
+import { Board } from '../../../../shared/models/board.interface'
+import { Task } from '../../../../shared/models/task.interface'
 import CreateTaskComponent from '../../shared/components/create-task/create-task.component'
 import styles from './sprint.module.scss'
 
-export default function SprintComponent() {
-  const tasks = []
+interface SprintProps {
+  board: Board
+}
+
+export default function SprintComponent({board}: SprintProps) {
   const [isDropdownVisible, setIsDropdownVisible] = useState<boolean>(true)
 
   const toggleDropdown = () => {
@@ -37,11 +43,34 @@ export default function SprintComponent() {
       </div>
 
       {isDropdownVisible?
-        <div className={styles.tasks}>
-            <div className={styles.defaultList}>
-                Planifica un sprint arrastrando el pie de página de sprint debajo de las incidencias correspondientes o arrastrando las incidencias hasta aquí.
+        <Droppable type="row" droppableId={board.id} key={board.id}>
+          {(provided) => 
+            <div className={styles.tasks} {...provided.droppableProps} ref={provided.innerRef}>
+              {board.tasks.length > 0? board.tasks.map((task: Task, index: number) => 
+                <Draggable
+                  key={task.id}
+                  draggableId={task.id}
+                  index={index}>
+                    {(provided) => 
+                      <div
+                        className={styles.task}
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        style={{...provided.draggableProps.style}}>
+                          <TaskComponent task={task}/>
+                      </div>
+                    }
+                </Draggable>
+              )
+              : <div className={styles.defaultList}>
+                  Planifica un sprint arrastrando el pie de página de sprint debajo de las incidencias correspondientes o arrastrando las incidencias hasta aquí.
+                </div>
+              }
+              {board.tasks.length > 0? provided.placeholder : ""}
             </div>
-        </div> : ""}
+          }
+        </Droppable> : ""}
 
       <CreateTaskComponent/>
     </div>

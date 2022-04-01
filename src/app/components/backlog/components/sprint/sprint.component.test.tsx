@@ -4,12 +4,20 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import ReactDOM from "react-dom";
 import SprintComponent from "./sprint.component";
 
+const board = {
+  roomId: "default",
+  id: "test",
+  columns: [],
+  tasks: [],
+  start: new Date(),
+  finish: new Date()
+}
 describe("SprintComponent", () => {
-  const setup = () => render(<SprintComponent />);
+  const setup = () => render(<SprintComponent board={board}/>);
 
   it('renders without crashing', () => {
     const div = document.createElement('div')
-    ReactDOM.render(<SprintComponent />, div)
+    ReactDOM.render(<SprintComponent board={board}/>, div)
   });
   
   it("after clicking details must remove default text", () => {
