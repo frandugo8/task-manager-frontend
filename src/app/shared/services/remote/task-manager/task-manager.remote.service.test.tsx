@@ -50,7 +50,7 @@ describe("TaskManagerRemoteService", () => {
     global.fetch = jest.fn().mockResolvedValue([{}]);
     const roomId = "default"
     const origin = {boardId: "to-do", taskId: "task1"}
-    const destination = {boardId: "to-do", adjacentId: "task2", isFirst: false}
+    const destination = {boardId: "to-do", adjacentId: "task2", columnId: "to-do", index: 0}
     const boards = await taskManagerRemoteService.updateTaskPriority(roomId, origin, destination);
 
     expect(global.fetch).toHaveBeenCalledWith(

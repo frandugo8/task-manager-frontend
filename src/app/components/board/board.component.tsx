@@ -29,7 +29,26 @@ export default function BoardComponent() {
     }
   }, [board])
 
-  const handleTaskPriorityChange = (destination: DraggableLocation, source: DraggableLocation): void => {
+  const handleColumnPriorityChange = (source: DraggableLocation, destination: DraggableLocation): void => {
+    const columnsCopy = JSON.parse(JSON.stringify(columns))
+    const [removed] = columnsCopy.splice(source.index, 1)
+    columnsCopy.splice(destination.index, 0, removed)
+
+    setColumns(columnsCopy)
+  
+    const origin = {
+      columnId: columns[source.index].id
+    }
+
+    const dest = {
+      index: destination.index
+    }
+
+    dispatch(updateColumnPriority({source, destination}))
+    taskManagerRemoteService.updateColumnPriority("default", boardId, origin, dest)
+  }
+
+  const handleTaskPriorityChange = (source: DraggableLocation, destination: DraggableLocation): void => {
     const columnsCopy = JSON.parse(JSON.stringify(columns))
     const sourceIndex = columns.findIndex((column) => column.id === source?.droppableId)
     const destinationIndex = columns.findIndex((column) => column.id === destination?.droppableId)
@@ -62,10 +81,10 @@ export default function BoardComponent() {
           boardId,
           columnId: destination.droppableId,
           adjacentId: destinationColumnTasks[destination.index]?.id,
-          isFirst: destination.index === 0
+          index: destination.index
         }
 
-        taskManagerRemoteService.updateTaskPriority("default", origin, dest)
+        taskManagerRemoteService.updateTaskPriority("default", origin, dest, boardId)
       }
     }
   }
@@ -75,18 +94,9 @@ export default function BoardComponent() {
       const { source, destination, type } = result
 
       if (type === "column") {
-        const origin = {
-          columnId: columns[source.index].id
-        }
-    
-        const dest = {
-          index: destination.index
-        }
-
-        dispatch(updateColumnPriority({source, destination}))
-        taskManagerRemoteService.updateColumnPriority("default", boardId, origin, dest)
+        handleColumnPriorityChange(source, destination)
       } else {
-        handleTaskPriorityChange(destination, source)
+        handleTaskPriorityChange(source, destination)
       }
     }
   }

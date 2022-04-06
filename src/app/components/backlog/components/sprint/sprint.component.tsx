@@ -45,7 +45,11 @@ export default function SprintComponent({board}: SprintProps) {
       {isDropdownVisible?
         <Droppable type="row" droppableId={board.id} key={board.id}>
           {(provided) => 
-            <div className={styles.tasks} {...provided.droppableProps} ref={provided.innerRef}>
+            <div
+              className={styles.tasks}
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+            >
               {board.tasks.length > 0? board.tasks.map((task: Task, index: number) => 
                 <Draggable
                   key={task.id}
