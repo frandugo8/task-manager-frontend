@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction, current } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { DraggableLocation } from "react-beautiful-dnd";
 import { Board } from "../../models/board.interface";
 import { Task } from "../../models/task.interface";
@@ -43,10 +43,9 @@ const boardsSlice = createSlice({
             })
 
             if (adjacentId) {
-              const taskIndex = board.tasks.findIndex((task: Task) => task.id === taskId)
-              const adjacentIndex = board.tasks.findIndex((task: Task) => task.id === adjacentId)
-  
+              const taskIndex = board.tasks.findIndex((task: Task) => task.id === taskId)  
               removed = board.tasks?.splice(taskIndex, 1)
+              const adjacentIndex = board.tasks.findIndex((task: Task) => task.id === adjacentId)
 
               const result = destination.index === 0? adjacentIndex : adjacentIndex + 1
               board.tasks?.splice(result, 0, ...removed)

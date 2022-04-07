@@ -31,16 +31,16 @@ describe("TaskManagerRemoteService", () => {
     global.fetch = jest.fn().mockResolvedValue([{}]);
     const roomId = "default"
     const boardId = "sprint1"    
-    const origin = {columnId: "to-do"}
+    const source = {columnId: "to-do"}
     const destination = {index: 1}
-    const boards = await taskManagerRemoteService.updateColumnPriority(roomId, boardId, origin, destination);
+    const boards = await taskManagerRemoteService.updateColumnPriority(roomId, boardId, source, destination);
 
     expect(global.fetch).toHaveBeenCalledWith(
       `${process.env.REACT_APP_TASK_MANAGER}.column-priority?roomId=${roomId}&boardId=${boardId}`,
       expect.objectContaining({
         method: 'PUT',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({origin, destination})
+        body: JSON.stringify({source, destination})
       })
     );
     expect(boards).toStrictEqual([{}]);
@@ -49,16 +49,16 @@ describe("TaskManagerRemoteService", () => {
   it('should update task priority when updateTaskPriority method is called', async () => {
     global.fetch = jest.fn().mockResolvedValue([{}]);
     const roomId = "default"
-    const origin = {boardId: "to-do", taskId: "task1"}
+    const source = {boardId: "to-do", taskId: "task1"}
     const destination = {boardId: "to-do", adjacentId: "task2", columnId: "to-do", index: 0}
-    const boards = await taskManagerRemoteService.updateTaskPriority(roomId, origin, destination);
+    const boards = await taskManagerRemoteService.updateTaskPriority(roomId, source, destination);
 
     expect(global.fetch).toHaveBeenCalledWith(
       `${process.env.REACT_APP_TASK_MANAGER}.task-priority?roomId=${roomId}`,
       expect.objectContaining({
         method: 'PUT',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({origin, destination})
+        body: JSON.stringify({source, destination})
       })
     );
     expect(boards).toStrictEqual([{}]);
