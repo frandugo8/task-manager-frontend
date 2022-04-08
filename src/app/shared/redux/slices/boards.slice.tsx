@@ -9,6 +9,15 @@ const boardsSlice = createSlice({
   name: 'board',
   initialState,
   reducers: {
+    addTask: (state, action: PayloadAction<{boardId: string, task: Task}>) => {
+      state.map((board: Board) => {
+        if (board.id === action.payload.boardId) {
+          board.tasks.push(action.payload.task)
+        }
+
+        return board
+      })
+    },
     addBoard: (state, action: PayloadAction<{board: Board}>) => {
       state.push(action.payload.board)
     },
@@ -77,7 +86,7 @@ const boardsSlice = createSlice({
   }
 })
 
-export const { setBoards, addBoard, updateColumnPriority, updateTaskPriority } = boardsSlice.actions
+export const { setBoards, addTask, addBoard, updateColumnPriority, updateTaskPriority } = boardsSlice.actions
 
 
 export default boardsSlice.reducer

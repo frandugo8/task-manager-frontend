@@ -16,6 +16,7 @@ export default function AppComponent() {
   useEffect(() => {
     taskManagerRemoteService.getBoards("default").then(async (response) => {
       const boards: Array<Board> = await response.json()
+      console.log("boards", boards)
       dispatch(setBoards({boards}))
    })
   }, [dispatch])

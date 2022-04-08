@@ -3,7 +3,6 @@ import { useState } from 'react'
 import { Droppable, Draggable } from 'react-beautiful-dnd'
 import TaskComponent from '../../../../shared/components/task/task.component'
 import { Board } from '../../../../shared/models/board.interface'
-import { Column } from '../../../../shared/models/column.interface'
 import { Task } from '../../../../shared/models/task.interface'
 import CreateTaskComponent from '../../shared/components/create-task/create-task.component'
 import styles from './sprint.module.scss'
@@ -36,7 +35,7 @@ export default function SprintComponent({board}: SprintComponentProps) {
 
           <div className={styles.date}>2 mar - 16 mar</div>
 
-          <div className={styles.tasksLength}>(2 incidencias)</div>
+          <div className={styles.tasksLength}>{`(${board.tasks.length} incidencias)`}</div>
         </div>
 
         <button type="button" className={styles.startFinishButton} onClick={completeSprint}>Completar sprint</button>
@@ -62,7 +61,7 @@ export default function SprintComponent({board}: SprintComponentProps) {
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
                         style={{...provided.draggableProps.style}}>
-                          <TaskComponent task={task}/>
+                          <TaskComponent key={task.id} task={task}/>
                       </div>
                     }
                 </Draggable>
@@ -75,7 +74,7 @@ export default function SprintComponent({board}: SprintComponentProps) {
           }
       </Droppable> : ""}
 
-      <CreateTaskComponent/>
+      <CreateTaskComponent boardId={board.id}/>
 
     </div>
     

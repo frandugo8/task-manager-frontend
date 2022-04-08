@@ -68,15 +68,17 @@ describe("BacklogComponent", () => {
         positions: 2
       });
 
-      expect(spies.taskManagerRemoteService).toHaveBeenCalled();
+      expect(spies.taskManagerRemoteService.updateTaskPriority).toHaveBeenCalled();
     })
   })
 })
 
 function loadSpies() {
   spies = {
-    taskManagerRemoteService: jest.spyOn(taskManagerRemoteService, "updateTaskPriority")
-      .mockImplementation(() => Promise.resolve({ json: () => Promise.resolve({})
-    }))
+    taskManagerRemoteService: {
+      updateTaskPriority: jest.spyOn(taskManagerRemoteService, "updateTaskPriority")
+        .mockImplementation(() => Promise.resolve({ json: () => Promise.resolve({})
+      }))
+    }
   }
 }
