@@ -1,11 +1,7 @@
 
-.backlog {
-  padding: 10%;
-}
-
-
 .boards {
   display: flex;
+  flex-direction: column;
 
   .board {
     border-radius: 6px;

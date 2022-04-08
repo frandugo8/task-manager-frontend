@@ -1,17 +1,18 @@
 
 import { useState } from 'react'
-import { Draggable, Droppable } from 'react-beautiful-dnd'
+import { Droppable, Draggable } from 'react-beautiful-dnd'
 import TaskComponent from '../../../../shared/components/task/task.component'
 import { Board } from '../../../../shared/models/board.interface'
+import { Column } from '../../../../shared/models/column.interface'
 import { Task } from '../../../../shared/models/task.interface'
 import CreateTaskComponent from '../../shared/components/create-task/create-task.component'
 import styles from './sprint.module.scss'
 
-interface SprintProps {
+interface SprintComponentProps {
   board: Board
 }
 
-export default function SprintComponent({board}: SprintProps) {
+export default function SprintComponent({board}: SprintComponentProps) {
   const [isDropdownVisible, setIsDropdownVisible] = useState<boolean>(true)
 
   const toggleDropdown = () => {
@@ -24,7 +25,6 @@ export default function SprintComponent({board}: SprintProps) {
 
   return (
     <div className={styles.sprint}>
-
       <div className={styles.header}>
 
         <div data-testid="details-element" className={styles.details} onClick={toggleDropdown}>
@@ -41,12 +41,11 @@ export default function SprintComponent({board}: SprintProps) {
 
         <button type="button" className={styles.startFinishButton} onClick={completeSprint}>Completar sprint</button>
       </div>
-
+      
       {isDropdownVisible?
         <Droppable type="row" droppableId={board.id} key={board.id}>
           {(provided) => 
-            <div
-              className={styles.tasks}
+            <div className={styles.tasks}
               ref={provided.innerRef}
               {...provided.droppableProps}
             >
@@ -59,6 +58,7 @@ export default function SprintComponent({board}: SprintProps) {
                       <div
                         className={styles.task}
                         ref={provided.innerRef}
+                        data-testid={task.id}
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
                         style={{...provided.draggableProps.style}}>
@@ -69,14 +69,15 @@ export default function SprintComponent({board}: SprintProps) {
               )
               : <div className={styles.defaultList}>
                   Planifica un sprint arrastrando el pie de página de sprint debajo de las incidencias correspondientes o arrastrando las incidencias hasta aquí.
-                </div>
-              }
-              {board.tasks.length > 0? provided.placeholder : ""}
+              </div>}
+              {provided.placeholder}
             </div>
           }
-        </Droppable> : ""}
+      </Droppable> : ""}
 
       <CreateTaskComponent/>
+
     </div>
+    
   )
 }

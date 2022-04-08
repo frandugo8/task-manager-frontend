@@ -1,8 +1,24 @@
 
 import "@testing-library/react"
 import { fireEvent, render, screen } from "@testing-library/react";
+import ReactDOM from "react-dom"
 import SprintComponent from "./sprint.component";
-import ReactDOM from "react-dom";
+
+jest.mock('react-beautiful-dnd', () => ({
+  Droppable: ({ children }: any) => children({
+    draggableProps: {
+      style: {},
+    },
+    innerRef: jest.fn(),
+  }, {}),
+  Draggable: ({ children }: any) => children({
+    draggableProps: {
+      style: {},
+    },
+    innerRef: jest.fn(),
+  }, {}),
+  DragDropContext: ({ children }: any) => children,
+}));
 
 const boardWithoutTasks = {
   roomId: "default",
@@ -30,22 +46,6 @@ const boardWithTasks = {
   finish: new Date()
 }
 
-jest.mock('react-beautiful-dnd', () => ({
-  Droppable: ({ children }: any) => children({
-    draggableProps: {
-      style: {},
-    },
-    innerRef: jest.fn(),
-  }, {}),
-  Draggable: ({ children }: any) => children({
-    draggableProps: {
-      style: {},
-    },
-    innerRef: jest.fn(),
-  }, {}),
-  DragDropContext: ({ children }: any) => children,
-}));
-
 describe("SprintComponent", () => {
   const setup = () => render(<SprintComponent board={boardWithoutTasks}/>);
 
@@ -71,5 +71,4 @@ describe("SprintComponent", () => {
     fireEvent.click(completeSprintButton)
   })
 })
-
 

@@ -1,23 +1,20 @@
-import { useEffect, useRef, useState } from 'react';
-import styles from './backlog.module.scss'
-import { DragDropContext, DraggableLocation, DropResult } from "react-beautiful-dnd";
-import { Column } from '../../shared/models/column.interface';
-import { useAppSelector } from '../../shared/redux/store/store';
-import { RootState } from '../../shared/redux/rootReducer';
-import { taskManagerRemoteService } from '../../shared/services/remote/task-manager/task-manager.remote.service';
+import { useEffect } from 'react';
+import { DropResult, DragDropContext } from 'react-beautiful-dnd';
+import { useDispatch, useSelector } from 'react-redux';
 import { Board } from '../../shared/models/board.interface';
-import { Task } from '../../shared/models/task.interface';
-import { useDispatch } from 'react-redux';
+import { RootState } from '../../shared/redux/rootReducer';
 import { updateTaskPriority } from '../../shared/redux/slices/boards.slice';
-import BoardListComponent from '../board/components/board-list/board-list.component';
+import { useAppSelector } from '../../shared/redux/store/store';
+import { taskManagerRemoteService } from '../../shared/services/remote/task-manager/task-manager.remote.service';
+import styles from './backlog.module.scss'
 import SprintComponent from './components/sprint/sprint.component';
 
 export default function BacklogComponent() {
-  const boards = useAppSelector((state: RootState) => state.boards)
   const boardId = "sprint1"
+  const boards = useAppSelector((state: RootState) => state.boards)
   const dispatch = useDispatch()
-  
-  const onDragEnd = (result: DropResult): void => {
+
+  const onDragEnd = async (result: DropResult): Promise<any> => {
     if (result.destination !== undefined) {
       const task = boards.find((board) => board.id === result.source?.droppableId)?.tasks[result.source.index]
       const adjacent = boards.find((board) => board.id === result.destination?.droppableId)?.tasks[result.destination.index]
@@ -35,13 +32,13 @@ export default function BacklogComponent() {
           index: result.destination.index
         }
   
-        taskManagerRemoteService.updateTaskPriority("default", origin, dest)
+        await taskManagerRemoteService.updateTaskPriority("default", origin, dest)
       }
-    
+
       dispatch(updateTaskPriority({source: result.source, destination: result.destination}))
     }
   }
-  
+
   return (
     <DragDropContext onDragEnd={result => onDragEnd(result)}>
       <div className={styles.backlog}>

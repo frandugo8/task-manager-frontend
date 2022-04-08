@@ -1,5 +1,5 @@
 
-import { render, screen, within } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import ReactDOM from "react-dom"
 import {
   mockGetComputedStyle,
@@ -7,44 +7,41 @@ import {
   makeDnd,
   DND_DIRECTION_DOWN,
 } from 'react-beautiful-dnd-test-utils';
+import BacklogComponent from "./backlog.component";
 import { Provider } from 'react-redux'
 import configureStore from 'redux-mock-store'
-import BacklogComponent from "./backlog.component";
+import { taskManagerRemoteService } from "../../shared/services/remote/task-manager/task-manager.remote.service";
 
-const verifyTaskOrderInColumn = (
-  columnTestId: string,
-  orderedTasks: string[]
-): void => {
-  const texts = within(screen.getByTestId(columnTestId))
-    .getAllByTestId('task')
-    .map(x => x.textContent);
-  expect(texts).toEqual(orderedTasks);
-};
+let spies: any
 
 describe("BacklogComponent", () => {
-  const initialState = {dispatch: {}, boards: [{
+  const initialState = {boards: [{
     roomId: "default",
     id: "sprint1",
     columns: [{id: "to-do", name: "Por hacer", isInitial: true, isDone: false}],
     tasks: [{
-      id: "1",
+      id: "task1",
       title: "First task",
       status: "to-do"
     },{
-      id: "2",
+      id: "task2",
       title: "Second task",
       status: "to-do"
     },{
-      id: "3",
+      id: "task3",
       title: "Third task",
       status: "to-do"
     }],
     start: new Date(),
     finish: new Date()
-  }]}
+  }], dispatch: {}}
 
   const mockStore = configureStore()
   let store
+
+  beforeEach(() => {
+    loadSpies()
+  })
 
   it('renders without crashing', () => {
     const div = document.createElement('div');
@@ -57,24 +54,29 @@ describe("BacklogComponent", () => {
       mockGetComputedStyle();
     });
 
-    it("moves a task down inside a board", async () => {
+    it("moves a task down inside a column", async () => {
       store = mockStore(initialState)
       const { container } = render(<Provider store={store}><BacklogComponent/></Provider>)
+
       mockDndSpacing(container);
   
       await makeDnd({
         getDragElement: () =>
           screen
-            .getByText('First task'),
+            .getByTestId('task1'),
         direction: DND_DIRECTION_DOWN,
         positions: 2
       });
-  
-      verifyTaskOrderInColumn("sprint1", [
-        'Second task',
-        'Third task',
-        'First task'
-      ])
+
+      expect(spies.taskManagerRemoteService).toHaveBeenCalled();
     })
   })
 })
+
+function loadSpies() {
+  spies = {
+    taskManagerRemoteService: jest.spyOn(taskManagerRemoteService, "updateTaskPriority")
+      .mockImplementation(() => Promise.resolve({ json: () => Promise.resolve({})
+    }))
+  }
+}
