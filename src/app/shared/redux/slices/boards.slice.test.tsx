@@ -1,5 +1,5 @@
 import { Board } from '../../models/board.interface'
-import reducer, { setBoards, addBoard, updateColumnPriority, updateTaskPriority } from './boards.slice'
+import reducer, { setBoards, addBoard, updateColumnPriority, updateTaskPriority, addTask } from './boards.slice'
 
 const boardList = [
   {
@@ -46,6 +46,23 @@ const sprint = {
   start: new Date(),
   finish: new Date()
 }
+
+const boardListWithNewTask = [{
+  roomId: "default",
+  id: "backlog",
+  columns: [],
+  tasks: [{
+    id: "task4",
+    title: "Fourth task",
+    status: "to-do"
+  },{
+    id: "task10",
+    title: "Tenth task",
+    status: "to-do"
+  }],
+  start: new Date(),
+  finish: new Date()
+}]
 
 const boardWithChangedPriorityColumns = {
   roomId: "default",
@@ -185,6 +202,17 @@ const boardWithChangedPriorityTasksInDifferentColumn = {
 describe("BoardsSlice", () => {
   it('should return the initial state', () => {
     expect(reducer(undefined, {type: undefined})).toEqual([])
+  })
+
+  it('should add task to desired board', () => {
+    const previousState = boardList
+    const task = {
+      id: "task10",
+      title: "Tenth task",
+      status: "to-do"
+    }
+  
+    expect(reducer(previousState, addTask({boardId: "backlog", task}))).toEqual(boardListWithNewTask)
   })
   
   it('should add board to current list', () => {

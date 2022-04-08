@@ -1,5 +1,14 @@
 
 export const taskManagerRemoteService = {
+  addTask: (roomId: string, boardId: string, task: string): Promise<any> => {
+    return fetch(`${process.env.REACT_APP_TASK_MANAGER}.task?roomId=${roomId}&boardId=${boardId}`, {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({task})
+    })
+  },
   getBoards: (roomId: string): Promise<any> => {
     return fetch(`${process.env.REACT_APP_TASK_MANAGER}.boards?roomId=${roomId}`, {
       method: "GET",

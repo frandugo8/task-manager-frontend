@@ -10,7 +10,7 @@ interface TaskProps {
 export default function TaskComponent({task, style}: TaskProps) {
   return (
     <div
-      data-test-id="task"
+      data-test-id={task.id}
       className={styles.task}
       style={style}>
       <div className={styles.task__type}/>

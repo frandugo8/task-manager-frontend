@@ -3,6 +3,8 @@ import "@testing-library/react"
 import { fireEvent, render, screen } from "@testing-library/react";
 import ReactDOM from "react-dom"
 import SprintComponent from "./sprint.component";
+import configureStore from 'redux-mock-store'
+import { Provider } from "react-redux";
 
 jest.mock('react-beautiful-dnd', () => ({
   Droppable: ({ children }: any) => children({
@@ -19,6 +21,9 @@ jest.mock('react-beautiful-dnd', () => ({
   }, {}),
   DragDropContext: ({ children }: any) => children,
 }));
+
+let store: any
+const initialState = {dispatch: {}, boards: []}
 
 const boardWithoutTasks = {
   roomId: "default",
@@ -47,11 +52,13 @@ const boardWithTasks = {
 }
 
 describe("SprintComponent", () => {
-  const setup = () => render(<SprintComponent board={boardWithoutTasks}/>);
+  const mockStore = configureStore()
+  store = mockStore(initialState)
+  const setup = () => render(<Provider store={store}><SprintComponent board={boardWithoutTasks}/></Provider>);
 
   it('renders without crashing', () => {
     const div = document.createElement('div')
-    ReactDOM.render(<SprintComponent board={boardWithTasks}/>, div)
+    ReactDOM.render(<Provider store={store}><SprintComponent board={boardWithTasks}/></Provider>, div)
   });
   
   it("after clicking details must remove default text", () => {
